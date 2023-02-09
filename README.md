@@ -2,12 +2,12 @@
 
 <h2>CBA Settings</h2>
 
-**Numerous CBA settings to customize modules:** To change them, go to `Options` -> `Addon Options` -> `Armor Modifier - ACE`
+**Numerous CBA settings to customize modules:** To change them, go to Options -> Addon Options -> Armor Modifier - ACE
 
 Inputs are arrays of numbers, in the form of: `[armorMultiplier, minimumArmor, maximumArmor]`
 * **armorMultiplier:** Interval: `[0.001 - infinite]`. If `=1`, this setting has no effect.
-* **minimumArmor:**    Interval: `[0 - infinite]`. If `<1`, this setting has no effect.
-* **maximumArmor:**    Interval: `[0 - infinite]`. If `<1`, this setting has no effect.
+* **minimumArmor:** Interval: `[0 - infinite]`. If `<1`, this setting has no effect.
+* **maximumArmor:** Interval: `[0 - infinite]`. If `<1`, this setting has no effect.
 
 No settings depend of each other, except for that that `minimumArmor` should be smaller or equal than `maximumArmor`.
 

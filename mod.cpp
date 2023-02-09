@@ -2,7 +2,7 @@
 name = "Armor Modifier - ACE";
 author = "johnb43";
 // https://community.bistudio.com/wiki/ImageToPAA
-picture = "\x\armor_modifier_ace\addons\main\ui\logo_armor_modifier_ace.paa";
+picture = "\x\armor_modifier_ace\addons\main\ui\logo_armor_modifier_ace.paa"; // http://www.clipartbest.com/clipart-Rid6xdRnT
 logo = "\x\armor_modifier_ace\addons\main\ui\logo_armor_modifier_ace.paa";
 logoOver = "\x\armor_modifier_ace\addons\main\ui\logo_armor_modifier_ace.paa";
 logoSmall = "\x\armor_modifier_ace\addons\main\ui\logo_armor_modifier_ace.paa";
