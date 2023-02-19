@@ -36,6 +36,12 @@ _unit setVariable ["armor_modifier_ace_main_hitPointMultiplier_limb", [armorMult
 [*] If [b]Player hitpoint damage reduction - chest[/b] is set to '[0.1, 10, 0]', it means that the minimum chest armor you have is 10 and you will take 10 times the damage. This means that if you have chest armor below 10, it will act as if you had 10 chest armor hitpoints and reduce the damage accordingly. Furthermore, it will multiply the damage by 10.
 [/list]
 
+[h2]Links[/h2]
+[list]
+[*] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2930736286]Steam Workshop[/url]
+[*] [url=https://github.com/johnb432/Armor-Modifier-ACE]GitHub[/url]
+[/list]
+
 [h2]Credit[/h2]
 [list]
 [*] Inspired by [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2849354160]ACE Armor Adjuster[/url]
