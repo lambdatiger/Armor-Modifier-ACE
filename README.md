@@ -1,8 +1,6 @@
-**Armor Modifier - ACE** adds the ability to tweak armor effectiveness. This mod is a mod that is required on all clients and server. Inspired by [ACE Armor Adjuster](https://steamcommunity.com/sharedfiles/filedetails/?id=2849354160).
+**Armor Modifier - ACE** is required on all clients and server and adds the ability to tweak armor effectiveness.
 
 <h2>CBA Settings</h2>
-
-**Numerous CBA settings to customize modules:** To change them, go to Options -> Addon Options -> Armor Modifier - ACE
 
 Inputs are arrays of numbers, in the form of: `[armorMultiplier, minimumArmor, maximumArmor]`
 * **armorMultiplier:** Interval: `[0.001 - infinite]`. If `=1`, this setting has no effect.
@@ -34,10 +32,15 @@ _unit setVariable ["armor_modifier_ace_main_hitPointMultiplier_limb", [armorMult
 * If **Player hitpoint damage reduction - chest** is set to `[1, 10, 0]`, it means that the minimum chest armor you have is 10. This means that if you have chest armor below 10, it will act as if you had 10 chest armor hitpoints and reduce the damage accordingly.
 * If **Player hitpoint damage reduction - chest** is set to `[0.1, 10, 0]`, it means that the minimum chest armor you have is 10 and you will take 10 times the damage. This means that if you have chest armor below 10, it will act as if you had 10 chest armor hitpoints and reduce the damage accordingly. Furthermore, it will multiply the damage by 10.
 
+<h2>Links</h2>
+
+* [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=2930736286)
+* [GitHub](https://github.com/johnb432/Armor-Modifier-ACE)
+
 <h2>Credit</h2>
 
-Mod by johnb43<br/>
-[GitHub](https://github.com/johnb432/Armor-Modifier-ACE)
+* Inspired by [ACE Armor Adjuster](https://steamcommunity.com/sharedfiles/filedetails/?id=2849354160)
+* Mod by johnb43
 
 <h2>License</h2>
 
