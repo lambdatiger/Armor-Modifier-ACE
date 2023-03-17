@@ -18,7 +18,7 @@
  * Public: No
  */
 
-params ["_unit", "_selection", "_damage", "_shooter", "_ammo", "_hitPointIndex", "_instigator", "_hitpoint"];
+params ["_unit", "_selection", "_damage", "_shooter", "_ammo", "_hitPointIndex", "_instigator", "_hitpoint", "_directHit", ["_ignoreAllowDamageACE", false]];
 
 // HD sometimes triggers for remote units - ignore.
 if !(local _unit) exitWith {nil};
@@ -34,7 +34,7 @@ if (_hitPoint isEqualTo "") then {
 };
 
 // Damage can be disabled with old variable or via sqf command allowDamage
-if !(isDamageAllowed _unit && {_unit getVariable ["ace_medical_allowDamage", true]}) exitWith {_oldDamage};
+if !(isDamageAllowed _unit && {_unit getVariable ["ace_medical_allowDamage", true] || {_ignoreAllowDamageACE}}) exitWith {_oldDamage};
 
 private _newDamage = _damage - _oldDamage;
 // Get armor value of hitpoint and calculate damage before armor
@@ -110,13 +110,13 @@ if (_hitPoint isEqualTo "ace_hdbracket") exitWith {
     // Priority used for sorting if incoming damage is equal
     private _allDamages = [
         // Real damage (ignoring armor),                  Actual damage (with armor),                Real damage modified (ignoring armor), Modified damage (with armor)
-        [_damageHead select 0,       PRIORITY_HEAD,       _damageHead select 1,       "Head",        _damageHead select 2,       _damageHead select 3],
-        [_damageBody select 0,       PRIORITY_BODY,       _damageBody select 1,       "Body",        _damageBody select 2,       _damageBody select 3],
-        [_damageLeftArm select 0,    PRIORITY_LEFT_ARM,   _damageLeftArm select 1,    "LeftArm",     _damageLeftArm select 2,    _damageLeftArm select 3],
-        [_damageRightArm select 0,   PRIORITY_RIGHT_ARM,  _damageRightArm select 1,   "RightArm",    _damageRightArm select 2,   _damageRightArm select 3],
-        [_damageLeftLeg select 0,    PRIORITY_LEFT_LEG,   _damageLeftLeg select 1,    "LeftLeg",     _damageLeftLeg select 2,    _damageLeftLeg select 3],
-        [_damageRightLeg select 0,   PRIORITY_RIGHT_LEG,  _damageRightLeg select 1,   "RightLeg",    _damageRightLeg select 2,   _damageRightLeg select 3],
-        [_damageStructural select 0, PRIORITY_STRUCTURAL, _damageStructural select 1, "#structural", _damageStructural select 2, _damageStructural select 3]
+        [_damageHead select 0,       PRIORITY_HEAD,       _damageHead select 1,       "Head",        _damageHead param [2, _damageHead select 0],               _damageHead param [3, _damageHead select 1]],
+        [_damageBody select 0,       PRIORITY_BODY,       _damageBody select 1,       "Body",        _damageBody param [2, _damageBody select 0],               _damageBody param [3, _damageBody select 1]],
+        [_damageLeftArm select 0,    PRIORITY_LEFT_ARM,   _damageLeftArm select 1,    "LeftArm",     _damageLeftArm param [2, _damageLeftArm select 0],         _damageLeftArm param [3, _damageLeftArm select 1]],
+        [_damageRightArm select 0,   PRIORITY_RIGHT_ARM,  _damageRightArm select 1,   "RightArm",    _damageRightArm param [2, _damageRightArm select 0],       _damageRightArm param [3, _damageRightArm select 1]],
+        [_damageLeftLeg select 0,    PRIORITY_LEFT_LEG,   _damageLeftLeg select 1,    "LeftLeg",     _damageLeftLeg param [2, _damageLeftLeg select 0],         _damageLeftLeg param [3, _damageLeftLeg select 1]],
+        [_damageRightLeg select 0,   PRIORITY_RIGHT_LEG,  _damageRightLeg select 1,   "RightLeg",    _damageRightLeg param [2, _damageRightLeg select 0],       _damageRightLeg param [3, _damageRightLeg select 1]],
+        [_damageStructural select 0, PRIORITY_STRUCTURAL, _damageStructural select 1, "#structural", _damageStructural param [2, _damageStructural select 0],   _damageStructural param [3, _damageStructural select 1]]
     ];
     TRACE_2("incoming",_allDamages,_damageStructural);
 
