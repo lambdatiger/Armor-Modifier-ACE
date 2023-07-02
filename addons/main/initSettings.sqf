@@ -1,3 +1,5 @@
+#include "script_component.hpp"
+
 #define HITPOINT_SETTINGS(TYPE,HITPOINT,TEXT)\
 [\
     QGVAR(TRIPLES(hitPointMultiplierSetting,TYPE,HITPOINT)),\

@@ -1,4 +1,4 @@
-[b]Armor Modifier - ACE[/b] is required on all clients and server and adds the ability to tweak armor effectiveness.
+[b]Armor Modifier - ACE[/b] is required on all clients and server and adds the ability to tweak armor effectiveness. This is not an official ACE mod.
 
 [h2]CBA Settings[/h2]
 Inputs are arrays of numbers, in the form of: '[armorMultiplier, minimumArmor, maximumArmor]'
@@ -39,6 +39,11 @@ _unit setVariable ["armor_modifier_ace_main_hitPointMultiplier_limb", [armorMult
 [h2]Warning[/h2]
 This mod might conflict with other mods. If you find an incompatibility, please report it.
 
+[h3]List of known incompatibility:[/h3]
+[list]
+[*] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2849354160]ACE Armor Adjuster[/url]
+[/list]
+
 [h2]Links[/h2]
 [list]
 [*] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2930736286]Steam Workshop[/url]
@@ -48,6 +53,7 @@ This mod might conflict with other mods. If you find an incompatibility, please 
 [h2]Credit[/h2]
 [list]
 [*] Inspired by [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2849354160]ACE Armor Adjuster[/url]
+[*] Code from ACE3
 [*] Mod by johnb43
 [/list]
 

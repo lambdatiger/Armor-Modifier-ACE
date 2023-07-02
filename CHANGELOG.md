@@ -1,3 +1,8 @@
+# Changelog for Armor Modifier - ACE 2.7.2023
+
+1.0.0.2
+- Updated to use HEMTT 1.2.0.
+
 # Changelog for Armor Modifier - ACE 17.3.2023
 
 1.0.0.1

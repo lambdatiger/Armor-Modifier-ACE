@@ -10,6 +10,6 @@ tooltip = "Armor Modifier - ACE";
 tooltipOwned = "Armor Modifier - ACE";
 action = "https://github.com/johnb432/Armor-Modifier-ACE";
 actionName = "Github";
-overview = "A small mod that can modify ACE armor values, made by johnb43.";
+overview = "A small mod that can modify ACE armor values. Made by johnb43.";
 hidePicture = 0;
 hideName = 0;
