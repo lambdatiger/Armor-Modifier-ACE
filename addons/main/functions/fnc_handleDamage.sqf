@@ -1,7 +1,7 @@
-#include "script_component.hpp"
+#include "..\script_component.hpp"
 
 /*
- * Author: commy2, SilentSpike, modified by johnb43
+ * Author: commy2, kymckay, modified by johnb43
  * Original:
  * HandleDamage EH where wound events are raised based on incoming damage.
  * Be aware that for each source of damage, the EH can fire multiple times (once for each hitpoint).
@@ -37,9 +37,20 @@ if (_hitPoint isEqualTo "") then {
 if !(isDamageAllowed _unit && {_unit getVariable ["ace_medical_allowDamage", true] || {_ignoreAllowDamageACE}}) exitWith {_oldDamage};
 
 private _newDamage = _damage - _oldDamage;
-// Get armor value of hitpoint and calculate damage before armor
-private _armor = [_unit, _hitpoint] call ace_medical_engine_fnc_getHitpointArmor;
+// Get scaled armor value of hitpoint and calculate damage before armor
+// We scale using passThrough to handle explosive-resistant armor properly (#9063)
+// We need realDamage to determine which limb was hit correctly
+[_unit, _hitpoint] call ace_medical_engine_fnc_getHitpointArmor params ["_armor", "_armorScaled"];
+
 private _realDamage = _newDamage * _armor;
+
+// ACE <3.16.0 does not return "_armorScaled"
+if (_hitPoint isNotEqualTo "#structural" && {!isNil "_armorScaled"}) then {
+    private _armorCoef = _armor / _armorScaled;
+    private _damageCoef = linearConversion [0, 1, ace_medical_engine_damagePassThroughEffect, 1, _armorCoef];
+    _newDamage = _newDamage * _damageCoef;
+};
+
 TRACE_4("Received hit",_hitpoint,_ammo,_newDamage,_realDamage);
 
 // Drowning doesn't fire the EH for each hitpoint so the "ace_hdbracket" code never runs
@@ -62,12 +73,35 @@ if (
     ace_medical_enableVehicleCrashes &&
     {_hitPoint isEqualTo "#structural"} &&
     {_ammo isEqualTo ""} &&
-    {_vehicle != _unit} &&
+    {!isNull _vehicle} &&
     {vectorMagnitude (velocity _vehicle) > 5}
     // todo: no way to detect if stationary and another vehicle hits you
 ) exitWith {
     TRACE_5("Crash",_unit,_shooter,_instigator,_damage,_newDamage);
     ["ace_medical_woundReceived", [_unit, [[_newDamage, _hitPoint, _newDamage]], _unit, "vehiclecrash"]] call CBA_fnc_localEvent;
+
+    0
+};
+
+// Receiving explosive damage inside a vehicle doesn't trigger for each hitpoint
+// This is the case for mines, explosives, artillery, and catastrophic vehicle explosions
+// Triggers twice, but that doesn't matter as damage is low
+if (
+    _hitPoint isEqualTo "#structural" &&
+    {!isNull _vehicle} &&
+    {_ammo isNotEqualTo ""} &&
+    {
+        private _ammoCfg = configFile >> "CfgAmmo" >> _ammo;
+        GET_NUMBER(_ammoCfg >> "explosive", 0) > 0 ||
+        {GET_NUMBER(_ammoCfg >> "indirectHit", 0) > 0}
+    }
+) exitwith {
+    TRACE_6("Vehicle hit",_unit,_shooter,_instigator,_damage,_newDamage,_damages);
+
+    _unit setVariable ["ace_medical_lastDamageSource", _shooter];
+    _unit setVariable ["ace_medical_lastInstigator", _instigator];
+
+    ["ace_medical_woundReceived", [_unit, [[_newDamage, _hitPoint, _newDamage]], _shooter, "vehiclehit"]] call CBA_fnc_localEvent;
 
     0
 };
@@ -109,7 +143,7 @@ if (_hitPoint isEqualTo "ace_hdbracket") exitWith {
     // Find hit point that received the maxium damage
     // Priority used for sorting if incoming damage is equal
     private _allDamages = [
-        // Real damage (ignoring armor),                  Actual damage (with armor),                Real damage modified (ignoring armor), Modified damage (with armor)
+        // Real damage (ignoring armor),                  Actual damage (with armor),                Real damage modified (ignoring armor),                     Modified damage (with armor)
         [_damageHead select 0,       PRIORITY_HEAD,       _damageHead select 1,       "Head",        _damageHead param [2, _damageHead select 0],               _damageHead param [3, _damageHead select 1]],
         [_damageBody select 0,       PRIORITY_BODY,       _damageBody select 1,       "Body",        _damageBody param [2, _damageBody select 0],               _damageBody param [3, _damageBody select 1]],
         [_damageLeftArm select 0,    PRIORITY_LEFT_ARM,   _damageLeftArm select 1,    "LeftArm",     _damageLeftArm param [2, _damageLeftArm select 0],         _damageLeftArm param [3, _damageLeftArm select 1]],
