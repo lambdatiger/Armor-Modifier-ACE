@@ -16,6 +16,8 @@ if (!isNil "NSM_jumppack_fnc_handle_damage") exitWith {
         _ehID = _unit addEventHandler ["HandleDamage", {
             params ["_unit", "", "_damage", "", "_projectile"];
 
+            private _ignoreAllowDamageACE = false;
+
             if (!(_unit getVariable ["ace_medical_allowDamage", true]) && {_unit getVariable ["NSM_jumppack_isJumping", false]} && {_projectile isNotEqualTo ""}) then {
                 (NSM_JUMPPACK_DAMAGE_MAP getOrDefault [backpack _unit, [NSM_JUMPPACK_DAMAGE_DEFAULT_CHANCE, NSM_JUMPPACK_DAMAGE_DEFAULT_DAMAGE], true]) params ["_chance", "_damageMultiplier"];
 
@@ -26,10 +28,10 @@ if (!isNil "NSM_jumppack_fnc_handle_damage") exitWith {
                 _this set [2, _damage * _damageMultiplier];
 
                 // Ignore value of "ace_medical_allowDamage"
-                _this pushBack true;
+                _ignoreAllowDamageACE = true;
             };
 
-            _this call FUNC(handleDamage)
+            [_this, _ignoreAllowDamageACE] call FUNC(handleDamage)
         }];
 
         _unit setVariable ["ace_medical_HandleDamageEHID", _ehID];
@@ -59,7 +61,7 @@ if (!isNil "NSM_jumppack_fnc_handle_damage") exitWith {
     // Replace existing ace medical damage event handler
     _unit removeEventHandler ["HandleDamage", _ehID];
 
-    _ehID = _unit addEventHandler ["HandleDamage", {_this call FUNC(handleDamage)}];
+    _ehID = _unit addEventHandler ["HandleDamage", {[_this] call FUNC(handleDamage)}];
 
     _unit setVariable ["ace_medical_HandleDamageEHID", _ehID];
 }, true, [], true] call CBA_fnc_addClassEventHandler;

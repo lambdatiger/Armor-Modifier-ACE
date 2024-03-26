@@ -1,3 +1,8 @@
+# Changelog for Armor Modifier - ACE 26.3.2024
+
+1.0.2.0
+- Updated to work with Arma 2.16.
+
 # Changelog for Armor Modifier - ACE 18.10.2023
 
 1.0.1.0

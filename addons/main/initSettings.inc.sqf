@@ -1,11 +1,9 @@
-#include "script_component.hpp"
-
 #define HITPOINT_SETTINGS(TYPE,HITPOINT,TEXT)\
 [\
     QGVAR(TRIPLES(hitPointMultiplierSetting,TYPE,HITPOINT)),\
     "EDITBOX",\
     [TEXT, "Allows the tuning the effectiveness of groups of armor hitpoints.\n[hitpoint multiplier, minimum armor, maximum armor]\nIf minimum or maximum armor value is below 1, they don't take effect."],\
-    [COMPONENT_NAME, FORMAT_1("%1 settings", QUOTE(TYPE))],\
+    [COMPONENT_NAME, FORMAT_1("%1 settings",QUOTE(TYPE))],\
     QUOTE(DEFAULT_SETTINGS),\
     0,\
     {\

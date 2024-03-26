@@ -18,7 +18,8 @@
  * Public: No
  */
 
-params ["_unit", "_selection", "_damage", "_shooter", "_ammo", "_hitPointIndex", "_instigator", "_hitpoint", "_directHit", ["_ignoreAllowDamageACE", false]];
+params ["_args", ["_ignoreAllowDamageACE", false]];
+_args params ["_unit", "_selection", "_damage", "_shooter", "_ammo", "_hitPointIndex", "_instigator", "_hitpoint", "_directHit"];
 
 // HD sometimes triggers for remote units - ignore.
 if !(local _unit) exitWith {nil};
@@ -34,7 +35,7 @@ if (_hitPoint isEqualTo "") then {
 };
 
 // Damage can be disabled with old variable or via sqf command allowDamage
-if !(isDamageAllowed _unit && {_unit getVariable ["ace_medical_allowDamage", true] || {_ignoreAllowDamageACE}}) exitWith {_oldDamage};
+if !(isDamageAllowed _unit && {_unit getVariable ["ace_medical_allowDamage", true] || _ignoreAllowDamageACE}) exitWith {_oldDamage};
 
 private _newDamage = _damage - _oldDamage;
 // Get scaled armor value of hitpoint and calculate damage before armor
@@ -92,8 +93,8 @@ if (
     {_ammo isNotEqualTo ""} &&
     {
         private _ammoCfg = configFile >> "CfgAmmo" >> _ammo;
-        GET_NUMBER(_ammoCfg >> "explosive", 0) > 0 ||
-        {GET_NUMBER(_ammoCfg >> "indirectHit", 0) > 0}
+        GET_NUMBER(_ammoCfg >> "explosive",0) > 0 ||
+        {GET_NUMBER(_ammoCfg >> "indirectHit",0) > 0}
     }
 ) exitwith {
     TRACE_6("Vehicle hit",_unit,_shooter,_instigator,_damage,_newDamage,_damages);

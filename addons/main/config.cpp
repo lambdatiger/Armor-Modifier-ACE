@@ -7,13 +7,14 @@ class CfgPatches {
         weapons[] = {};
         requiredVersion = REQUIRED_VERSION;
         requiredAddons[] = {
-            "cba_main",
-            "cba_xeh",
             "ace_medical_engine"
         };
         author = "johnb43";
-        authors[] = {"johnb43"};
+        authors[] = {
+            "johnb43"
+        };
         url = "https://github.com/johnb432/Armor-Modifier-ACE";
+        skipWhenMissingDependencies = 1;
         VERSION_CONFIG;
     };
 };
