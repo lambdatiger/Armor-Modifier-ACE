@@ -30,14 +30,12 @@ jobs:
         xcopy /e /h /q pullrequest\include include\
     - name: Run HEMTT release
       run: hemtt release
-    - name: Test
-      run: ls -al
     - name: Remove 'latest' zip
-      run: find -type f -name '*latest.zip' -delete
+      run: del releases\*latest.zip
     - name: Create release
       uses: marvinpinto/action-automatic-releases@latest
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         automatic_release_tag: "${{ github.ref_name }}"
         prerelease: false
-        files: releases/
+        files: releases\
