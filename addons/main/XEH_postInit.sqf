@@ -81,7 +81,7 @@ if (!isNil "NSM_jumppack_fnc_handle_damage") exitWith {
             params ["_unit"];
             _unit setVariable [QGVAR(armorHash), GVAR(classArmorHash) getOrDefault [(typeOf _unit), DEFAULT_HASH_SETTINGS]];
         }, false] call CBA_fnc_addClassEventHandler;
-        createHashMap
+        +GVAR(defaultArmorHash)
     }, true];
     {_classHashMap set [_x, _armorArray]} forEach (_hitPoint call FUNC(resolveHitPoints));
 }] call CBA_fnc_addEventHandler;
