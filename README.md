@@ -7,7 +7,9 @@ Inputs are arrays of numbers, in the form of: `[armorMultiplier, minimumArmor, m
 * **minimumArmor:** Interval: `[0 - infinite]`. If `<1`, this setting has no effect.
 * **maximumArmor:** Interval: `[0 - infinite]`. If `<1`, this setting has no effect.
 
-No settings depend of each other, except for that that `minimumArmor` should be smaller or equal than `maximumArmor`.
+No settings depend of each other, except for that that `minimumArmor` should be smaller or equal than `maximumArmor`.In addition, two is usually the minimum hitpoint armor a unit has without any equipment on.
+
+There are two main modes of operation. The first relies on a division between players and AI. The second relies on a division between sides (i.e., `west`, `east`, `resistance`, and `civilian`). In both cases, individual units can have their own settings
 
 These settings are available for players and AI separately:
 * **Hitpoint damage reduction - head:** Allows the modification of damage reduction on head hitpoints.
@@ -16,17 +18,32 @@ These settings are available for players and AI separately:
 
 If mission makers wish to set coefficients on individual units, you can use the following:
 ```sqf
-// For head coefficients
-_unit setVariable ["armor_modifier_ace_main_hitPointMultiplier_head", [armorMultiplier, minimumArmor, maximumArmor], true];
+// For head coefficient
+[_unit, "hitHead", [armorMultiplier, minimumArmor, maximumArmor]] call armor_modifier_ace_main_fnc_setUnitArmor;
 
-// For chest coefficients
-_unit setVariable ["armor_modifier_ace_main_hitPointMultiplier_chest", [armorMultiplier, minimumArmor, maximumArmor], true];
-
-// For limb coefficients
-_unit setVariable ["armor_modifier_ace_main_hitPointMultiplier_limb", [armorMultiplier, minimumArmor, maximumArmor], true];
+// For torso coefficients
+[_unit, "ama_hitTorso", [armorMultiplier, minimumArmor, maximumArmor]] call armor_modifier_ace_main_fnc_setUnitArmor;
 ```
 
-2 is usually the minimum hitpoint armor a unit has without any equipment on.
+If mission makers wish to set coefficients on class names, you can use the following:
+```sqf
+// For head coefficient
+[typeOf _unit, "hitHead", [armorMultiplier, minimumArmor, maximumArmor]] call armor_modifier_ace_main_fnc_setClassArmor;
+
+// For torso coefficients
+[typeOf _unit, "ama_hitTorso", [armorMultiplier, minimumArmor, maximumArmor]] call armor_modifier_ace_main_fnc_setClassArmor;
+```
+Hit points can be one of the following
+* Standard hit points including:
+  * Head hit points - "hitHead", "hitNeck", "hitFace"
+  * Body hit points - "hitAbdomen", "hitDiaphragm", "hitChest", "hitPelvis"
+  * Limb hit points - "hitLeftArm", "hitRightArm", "hitLeftLeg", "hitRightLeg"
+* Hit point groups such as
+  * "ama_hitTorso" - combination of the "hitAbdomen", "hitDiaphragm", and "hitChest" hit points
+  * "ama_hitBody" - combination of the "hitPelvis", "hitAbdomen", "hitDiaphragm", and "hitChest" hit points
+  * "ama_hitArms" - combination of the "hitLeftArm" and "hitRightArm" hit points
+  * "ama_hitLegs" - combination of the "hitLeftLeg" and "hitRightLeg" hit points
+  * "ama_hitLimbs" - combination of the "ama_hitArms" and "ama_hitLegs" hit points
 
 <h2>Examples</h2>
 

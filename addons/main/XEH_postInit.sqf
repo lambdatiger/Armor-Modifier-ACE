@@ -65,3 +65,23 @@ if (!isNil "NSM_jumppack_fnc_handle_damage") exitWith {
 
     _unit setVariable ["ace_medical_HandleDamageEHID", _ehID];
 }, true, [], true] call CBA_fnc_addClassEventHandler;
+
+[QGVAR(updateUnitArmor), {
+    params ["_unit", "_hitPoint", "_armorArray"];
+    if (isNull _unit || !alive _unit) exitWith {};
+    private _newHash = +(_unit getVariable [QGVAR(armorHash), GVAR(defaultArmorHash)]);
+    {_newHash set [_x, _armorArray]} forEach (_hitPoint call FUNC(resolveHitPoints));
+    _unit setVariable [QGVAR(armorHash), _newHash];
+}] call CBA_fnc_addEventHandler;
+
+[QGVAR(updateClassArmor), {
+    params ["_class", "_hitPoint", "_armorArray"];
+    private _classHashMap = GVAR(classArmorHash) getOrDefaultCall [_class, {
+        ["CAManBase", "init", {
+            params ["_unit"];
+            _unit setVariable [QGVAR(armorHash), GVAR(classArmorHash) getOrDefault [(typeOf _unit), DEFAULT_HASH_SETTINGS]];
+        }, false] call CBA_fnc_addClassEventHandler;
+        createHashMap
+    }, true];
+    {_classHashMap set [_x, _armorArray]} forEach (_hitPoint call FUNC(resolveHitPoints));
+}] call CBA_fnc_addEventHandler;

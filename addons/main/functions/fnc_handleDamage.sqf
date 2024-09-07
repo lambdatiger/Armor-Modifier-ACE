@@ -1,7 +1,7 @@
 #include "..\script_component.hpp"
 
 /*
- * Author: commy2, kymckay, modified by johnb43
+ * Author: commy2, kymckay, modified by johnb43 & Lambda.Tiger
  * Original:
  * HandleDamage EH where wound events are raised based on incoming damage.
  * Be aware that for each source of damage, the EH can fire multiple times (once for each hitpoint).
@@ -100,7 +100,7 @@ if (
         GET_NUMBER(_ammoCfg >> "explosive",0) > 0 ||
         {GET_NUMBER(_ammoCfg >> "indirectHit",0) > 0}
     }
-) exitwith {
+) exitWith {
     TRACE_5("Vehicle hit",_unit,_shooter,_instigator,_damage,_newDamage);
 
     _unit setVariable ["ace_medical_lastDamageSource", _shooter];
@@ -112,20 +112,12 @@ if (
 };
 
 // Get setting for particular unit
-private _multiplierArray = switch (true) do {
-    case (_hitPoint in ["hitface", "hitneck", "hithead"]): {
-        _unit getVariable [QGVAR(hitPointMultiplier_head), [GVAR(hitPointMultiplier_ai_head), GVAR(hitPointMultiplier_player_head)] select (isPlayer _unit)]
-    };
-    case (_hitPoint in ["hitpelvis" ,"hitabdomen", "hitdiaphragm", "hitchest"]): {
-        _unit getVariable [QGVAR(hitPointMultiplier_chest), [GVAR(hitPointMultiplier_ai_chest), GVAR(hitPointMultiplier_player_chest)] select (isPlayer _unit)]
-    };
-    case (_hitPoint in ["hitleftarm", "hitrightarm", "hitleftleg", "hitrightleg"]): {
-        _unit getVariable [QGVAR(hitPointMultiplier_limb), [GVAR(hitPointMultiplier_ai_limb), GVAR(hitPointMultiplier_player_limb)] select (isPlayer _unit)]
-    };
-    default {
-        DEFAULT_SETTINGS
-    };
-};
+// I don't think we truely need 3 methods avaiable, I would rather choose two 2
+private _multiplierArray = _unit getVariable [QGVAR(armorHash), (if (GVAR(useSide)) then {
+    GVAR(armorValueHash) getOrDefault [side _unit, GVAR(defaultArmorHash)]
+} else {
+    GVAR(armorValueHash) get (isPlayer _unit)
+})] getOrDefault [_hitPoint, DEFAULT_SETTINGS, true];
 
 private _modifiedNewDamage = _newDamage;
 private _modifiedRealDamage = _realDamage;

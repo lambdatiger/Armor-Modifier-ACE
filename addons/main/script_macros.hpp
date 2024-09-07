@@ -6,6 +6,7 @@
 
 #define DEFAULT_SETTINGS [ARR_3(1,0,0)]
 #define MINIMUM_SETTINGS [ARR_3(0.001,0,0)]
+#define DEFAULT_HASH_SETTINGS createHashMapFromArray [["hithead",[1,0,0]],["hitdiaphragm",[1,0,0]],["hitleftarm",[1,0,0]],["hitleftleg",[1,0,0]],["hitneck",[1,0,0]],["hitpelvis",[1,0,0]],["hitrightleg",[1,0,0]],["hitchest",[1,0,0]],["hitabdomen",[1,0,0]],["hitrightarm",[1,0,0]],["hitface",[1,0,0]]]
 
 #define DFUNC(var1) TRIPLES(ADDON,fnc,var1)
 

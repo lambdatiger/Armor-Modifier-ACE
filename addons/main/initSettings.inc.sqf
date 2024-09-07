@@ -1,35 +1,92 @@
-#define HITPOINT_SETTINGS(TYPE,HITPOINT,TEXT)\
+#define HITPOINT_SETTINGS_FUNCTION(HITPOINT,HASHVALUE) {\
+    private _newSettings = parseSimpleArray _this;\
+    private _parsedSettings = [];\
+    \
+    {\
+        if (_x isEqualType 0) then {\
+            _parsedSettings pushBack (_x max (MINIMUM_SETTINGS select _forEachIndex));\
+        } else {\
+            _parsedSettings pushBack (DEFAULT_SETTINGS select _forEachIndex);\
+        };\
+    } forEach _newSettings;\
+    \
+    if (_parsedSettings isNotEqualTo _newSettings) then {\
+        [ARR_2("A setting was set too low or otherwise incorrectly, reverting to default setting.",3)] call ace_common_fnc_displayTextStructured;\
+    };\
+    \
+    private _hitPointHashMap = GVAR(armorValueHash) getOrDefault [HASHVALUE, createHashMap, true];\
+    switch (QUOTE(HITPOINT)) do {\
+        case QUOTE(torso): {\
+            _hitPointHashMap set ["hitabdomen", _parsedSettings];\
+            _hitPointHashMap set ["hitdiaphragm", _parsedSettings];\
+            _hitPointHashMap set ["hitchest", _parsedSettings];\
+        };\
+        case QUOTE(arms): {\
+            _hitPointHashMap set ["hitleftarm", _parsedSettings];\
+            _hitPointHashMap set ["hitrightarm", _parsedSettings];\
+        };\
+        case QUOTE(legs): {\
+            _hitPointHashMap set ["hitleftleg", _parsedSettings];\
+            _hitPointHashMap set ["hitrightleg", _parsedSettings];\
+        };\
+        default {\
+            _hitPointHashMap set [FORMAT_1("hit%1",QUOTE(HITPOINT)), _parsedSettings];\
+        };\
+    };\
+}
+
+#define HITPOINT_SETTINGS(TYPE,HITPOINT,TEXT,HASHVALUE)\
 [\
-    QGVAR(TRIPLES(hitPointMultiplierSetting,TYPE,HITPOINT)),\
+    QGVAR(DOUBLES(TYPE,HITPOINT)),\
     "EDITBOX",\
     [TEXT, "Allows the tuning the effectiveness of groups of armor hitpoints.\n[hitpoint multiplier, minimum armor, maximum armor]\nIf minimum or maximum armor value is below 1, they don't take effect."],\
     [COMPONENT_NAME, FORMAT_1("%1 settings",QUOTE(TYPE))],\
     QUOTE(DEFAULT_SETTINGS),\
-    0,\
-    {\
-        private _newSettings = parseSimpleArray _this;\
-        private _parsedSettings = [];\
-        \
-        {\
-            if (_x isEqualType 0) then {\
-                _parsedSettings pushBack (_x max (MINIMUM_SETTINGS select _forEachIndex));\
-            } else {\
-                _parsedSettings pushBack (DEFAULT_SETTINGS select _forEachIndex);\
-            };\
-        } forEach _newSettings;\
-        \
-        if (_parsedSettings isNotEqualTo _newSettings) then {\
-            [ARR_2("A setting was set too low or otherwise incorrectly, reverting to default setting.",3)] call ace_common_fnc_displayTextStructured;\
-        };\
-        \
-        GVAR(TRIPLES(hitPointMultiplier,TYPE,HITPOINT)) = _parsedSettings;\
-    }\
+    true,\
+    HITPOINT_SETTINGS_FUNCTION(HITPOINT,HASHVALUE)\
 ] call CBA_fnc_addSetting
 
-HITPOINT_SETTINGS(Player,head,"Player hitpoint damage reduction - head");
-HITPOINT_SETTINGS(Player,chest,"Player hitpoint damage reduction - chest");
-HITPOINT_SETTINGS(Player,limb,"Player hitpoint damage reduction - limb");
+#define HITPOINT_SETTINGS_SIDE(TYPE,HITPOINT,TEXT)\
+[\
+    QGVAR(DOUBLES(TYPE,HITPOINT)),\
+    "EDITBOX",\
+    [TEXT, "Allows the tuning the effectiveness of groups of armor hitpoints.\n[hitpoint multiplier, minimum armor, maximum armor]\nIf minimum or maximum armor value is below 1, they don't take effect."],\
+    [COMPONENT_NAME, FORMAT_1("Side settings - %1",QUOTE(TYPE))],\
+    QUOTE(DEFAULT_SETTINGS),\
+    true,\
+    HITPOINT_SETTINGS_FUNCTION(HITPOINT,TYPE)\
+] call CBA_fnc_addSetting
 
-HITPOINT_SETTINGS(AI,head,"AI hitpoint damage reduction - head");
-HITPOINT_SETTINGS(AI,chest,"AI hitpoint damage reduction - chest");
-HITPOINT_SETTINGS(AI,limb,"AI hitpoint damage reduction - limb");
+#define HITPOINT_CHECK_SETTING(OBJECT,HASHVALUE) HITPOINT_SETTINGS(OBJECT,head,FORMAT_1("%1 hitpoint damage reduction - head",QUOTE(OBJECT)),HASHVALUE);\
+HITPOINT_SETTINGS(OBJECT,face,FORMAT_1("%1 hitpoint damage reduction - face",QUOTE(OBJECT)),HASHVALUE);\
+HITPOINT_SETTINGS(OBJECT,neck,FORMAT_1("%1 hitpoint damage reduction - neck",QUOTE(OBJECT)),HASHVALUE);\
+HITPOINT_SETTINGS(OBJECT,torso,FORMAT_1("%1 hitpoint damage reduction - torso",QUOTE(OBJECT)),HASHVALUE);\
+HITPOINT_SETTINGS(OBJECT,pelvis,FORMAT_1("%1 hitpoint damage reduction - pelvis",QUOTE(OBJECT)),HASHVALUE);\
+HITPOINT_SETTINGS(OBJECT,arms,FORMAT_1("%1 hitpoint damage reduction - arms",QUOTE(OBJECT)),HASHVALUE);\
+HITPOINT_SETTINGS(OBJECT,legs,FORMAT_1("%1 hitpoint damage reduction - legs",QUOTE(OBJECT)),HASHVALUE)
+
+#define HITPOINT_CHECK_SETTING_SIDE(OBJECT) HITPOINT_SETTINGS_SIDE(OBJECT,head,FORMAT_1("%1 hitpoint damage reduction - head",QUOTE(OBJECT)));\
+HITPOINT_SETTINGS_SIDE(OBJECT,face,FORMAT_1("%1 hitpoint damage reduction - face",QUOTE(OBJECT)));\
+HITPOINT_SETTINGS_SIDE(OBJECT,neck,FORMAT_1("%1 hitpoint damage reduction - neck",QUOTE(OBJECT)));\
+HITPOINT_SETTINGS_SIDE(OBJECT,torso,FORMAT_1("%1 hitpoint damage reduction - torso",QUOTE(OBJECT)));\
+HITPOINT_SETTINGS_SIDE(OBJECT,pelvis,FORMAT_1("%1 hitpoint damage reduction - pelvis",QUOTE(OBJECT)));\
+HITPOINT_SETTINGS_SIDE(OBJECT,arms,FORMAT_1("%1 hitpoint damage reduction - arms",QUOTE(OBJECT)));\
+HITPOINT_SETTINGS_SIDE(OBJECT,legs,FORMAT_1("%1 hitpoint damage reduction - legs",QUOTE(OBJECT)))
+
+[
+    QGVAR(useSide),
+    "CHECKBOX",
+    ["Unit's side to decides armor", "If this box is ticked a unit's side will be used to decide it armor.\nIf left unticked, whether the unit is AI or a player decides armor values."],
+    COMPONENT_NAME,
+    true,
+    true,
+    {}
+] call CBA_fnc_addSetting;
+
+
+HITPOINT_CHECK_SETTING(Player,true);
+HITPOINT_CHECK_SETTING(AI,false);
+HITPOINT_CHECK_SETTING_SIDE(Blufor);
+HITPOINT_CHECK_SETTING_SIDE(Opfor);
+HITPOINT_CHECK_SETTING_SIDE(Independent);
+HITPOINT_CHECK_SETTING_SIDE(Civilian);
