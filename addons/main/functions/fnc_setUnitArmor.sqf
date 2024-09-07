@@ -4,7 +4,7 @@
  * Sets the armor value for a specific unit.
  *
  * Arguments:
- * 0: Unit to set hit point armor values <STRING>
+ * 0: Unit to set hit point armor values <OBJECT>
  * 1: Hit point to apply armor value to <STRING>
  * 2: Armor array in format [multiplier, minimum, maximum] <ARRAY>
  *

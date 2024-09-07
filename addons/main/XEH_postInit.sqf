@@ -77,7 +77,7 @@ if (!isNil "NSM_jumppack_fnc_handle_damage") exitWith {
 [QGVAR(updateClassArmor), {
     params ["_class", "_hitPoint", "_armorArray"];
     private _classHashMap = GVAR(classArmorHash) getOrDefaultCall [_class, {
-        ["CAManBase", "init", {
+        [_class, "init", {
             params ["_unit"];
             _unit setVariable [QGVAR(armorHash), GVAR(classArmorHash) getOrDefault [(typeOf _unit), DEFAULT_HASH_SETTINGS]];
         }, false] call CBA_fnc_addClassEventHandler;
