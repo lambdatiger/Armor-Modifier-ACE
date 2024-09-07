@@ -1,7 +1,7 @@
 #include "..\script_component.hpp"
 /*
  * Author: Lambda.Tiger
- * Sets the armor value for a specific class. This is not retroactive
+ * Sets the armor value for a specific class. This is not retroactive or inherited.
  *
  * Arguments:
  * 0: Unit classname to set hit point armor values <STRING>
