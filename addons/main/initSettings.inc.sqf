@@ -42,7 +42,7 @@
     [TEXT, "Allows the tuning the effectiveness of groups of armor hitpoints.\n[hitpoint multiplier, minimum armor, maximum armor]\nIf minimum or maximum armor value is below 1, they don't take effect."],\
     [COMPONENT_NAME, FORMAT_1("%1 settings",QUOTE(TYPE))],\
     QUOTE(DEFAULT_SETTINGS),\
-    true,\
+    0,\
     HITPOINT_SETTINGS_FUNCTION(HITPOINT,HASHVALUE)\
 ] call CBA_fnc_addSetting
 
@@ -53,7 +53,7 @@
     [TEXT, "Allows the tuning the effectiveness of groups of armor hitpoints.\n[hitpoint multiplier, minimum armor, maximum armor]\nIf minimum or maximum armor value is below 1, they don't take effect."],\
     [COMPONENT_NAME, FORMAT_1("Side settings - %1",QUOTE(TYPE))],\
     QUOTE(DEFAULT_SETTINGS),\
-    true,\
+    0,\
     HITPOINT_SETTINGS_FUNCTION(HITPOINT,TYPE)\
 ] call CBA_fnc_addSetting
 
