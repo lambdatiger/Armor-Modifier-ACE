@@ -42,7 +42,7 @@
     [TEXT, "Allows the tuning the effectiveness of groups of armor hitpoints.\n[hitpoint multiplier, minimum armor, maximum armor]\nIf minimum or maximum armor value is below 1, they don't take effect."],\
     [COMPONENT_NAME, FORMAT_1("%1 settings",QUOTE(TYPE))],\
     QUOTE(DEFAULT_SETTINGS),\
-    0,\
+    true,\
     HITPOINT_SETTINGS_FUNCTION(HITPOINT,HASHVALUE)\
 ] call CBA_fnc_addSetting
 
@@ -53,7 +53,7 @@
     [TEXT, "Allows the tuning the effectiveness of groups of armor hitpoints.\n[hitpoint multiplier, minimum armor, maximum armor]\nIf minimum or maximum armor value is below 1, they don't take effect."],\
     [COMPONENT_NAME, FORMAT_1("Side settings - %1",QUOTE(TYPE))],\
     QUOTE(DEFAULT_SETTINGS),\
-    0,\
+    true,\
     HITPOINT_SETTINGS_FUNCTION(HITPOINT,TYPE)\
 ] call CBA_fnc_addSetting
 
@@ -75,10 +75,10 @@ HITPOINT_SETTINGS_SIDE(OBJECT,legs,FORMAT_1("%1 hitpoint damage reduction - legs
 
 [
     QGVAR(useSide),
-    "CHECKBOX",
-    ["Unit's side to decides armor", "If this box is ticked a unit's side will be used to decide it armor.\nIf left unticked, whether the unit is AI or a player decides armor values."],
+    "LIST",
+    ["Armor assignment system", "What system a unit's modified armor values uses.\nBased on either side, or whether or not the unit is a player"],
     COMPONENT_NAME,
-    true,
+    [[true, false], ["Unit Side", "AI vs Player"], 0],
     true,
     {}
 ] call CBA_fnc_addSetting;
@@ -86,7 +86,7 @@ HITPOINT_SETTINGS_SIDE(OBJECT,legs,FORMAT_1("%1 hitpoint damage reduction - legs
 
 HITPOINT_CHECK_SETTING(Player,true);
 HITPOINT_CHECK_SETTING(AI,false);
-HITPOINT_CHECK_SETTING_SIDE(Blufor);
-HITPOINT_CHECK_SETTING_SIDE(Opfor);
+HITPOINT_CHECK_SETTING_SIDE(BluFor);
+HITPOINT_CHECK_SETTING_SIDE(OpFor);
 HITPOINT_CHECK_SETTING_SIDE(Independent);
 HITPOINT_CHECK_SETTING_SIDE(Civilian);
