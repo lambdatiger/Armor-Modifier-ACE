@@ -113,11 +113,12 @@ if (
 
 // Get setting for particular unit
 // I don't think we truely need 3 methods avaiable, I would rather choose two 2
-private _multiplierArray = _unit getVariable [QGVAR(armorHash), (if (GVAR(useSide)) then {
-    GVAR(armorValueHash) getOrDefault [side _unit, GVAR(defaultArmorHash)]
-} else {
-    GVAR(armorValueHash) get (isPlayer _unit)
-})] getOrDefault [_hitPoint, DEFAULT_SETTINGS, true];
+private _multiplierArray = _unit getVariable [QGVAR(armorHash),
+    GVAR(armorValueHash) getOrDefault [
+        [isPlayer _unit, side _unit] select GVAR(useSide),
+        GVAR(defaultArmorHash)
+    ]
+] getOrDefault [_hitPoint, DEFAULT_SETTINGS, true];
 
 private _modifiedNewDamage = _newDamage;
 private _modifiedRealDamage = _realDamage;
