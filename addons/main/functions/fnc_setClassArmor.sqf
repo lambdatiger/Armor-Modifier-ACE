@@ -11,6 +11,10 @@
  * Return Value:
  * None
  *
+ * Example:
+ * [typeOf player, "hitFace", [1, 2, 2]] call potato_armorAdjuster_setClassArmor;
+ * [typeOf player, "ama_hitTorso", [1, 2, 2]] call potato_armorAdjuster_setClassArmor;
+ *
  * Public: Yes
  */
 params [
@@ -32,4 +36,4 @@ if (false in (_armorArray apply {_x isEqualType 0})) exitWith {
 };
 
 _this set [1, _hitPoint];
-[QGVAR(updateClassArmor), _this] call CBA_fnc_globalEvent;
+[QGVAR(updateClassArmor), _this] call CBA_fnc_globalEventJIP;
