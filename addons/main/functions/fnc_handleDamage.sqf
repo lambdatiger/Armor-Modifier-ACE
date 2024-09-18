@@ -115,7 +115,7 @@ if (
 // I don't think we truely need 3 methods avaiable, I would rather choose two 2
 private _multiplierArray = _unit getVariable [QGVAR(armorHash),
     GVAR(armorValueHash) getOrDefault [
-        [isPlayer _unit, side _unit] select GVAR(useSide),
+        side _unit,
         GVAR(defaultArmorHash)
     ]
 ] getOrDefault [_hitPoint, DEFAULT_SETTINGS, true];
@@ -125,7 +125,7 @@ private _modifiedRealDamage = _realDamage;
 
 // If default settings, we don't need to change anything, so skip calculcations and let ace handle damage
 if (_multiplierArray isNotEqualTo DEFAULT_SETTINGS) then {
-    _multiplierArray params ["_hitPointMultiplier", "_armorMin", "_armorMax"];
+    _multiplierArray params ["_hitPointTimeser", "_armorMin", "_armorMax"];
 
     switch (true) do {
         case (_armorMin >= 1 && {_armor < _armorMin}): {
@@ -144,8 +144,8 @@ if (_multiplierArray isNotEqualTo DEFAULT_SETTINGS) then {
         };
     };
 
-    _modifiedNewDamage = _modifiedNewDamage / _hitPointMultiplier;
-    _modifiedRealDamage = _modifiedRealDamage / _hitPointMultiplier;
+    _modifiedNewDamage = _modifiedNewDamage / _hitPointTimeser;
+    _modifiedRealDamage = _modifiedRealDamage / _hitPointTimeser;
 
     TRACE_5("Hitpoint damage multiplied",_armor,_newDamage,_modifiedNewDamage,_realDamage,_modifiedRealDamage);
 };

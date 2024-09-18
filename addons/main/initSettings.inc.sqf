@@ -35,57 +35,25 @@
     };\
 }
 
-#define HITPOINT_SETTINGS(TYPE,HITPOINT,TEXT,HASHVALUE)\
-[\
-    QGVAR(DOUBLES(TYPE,HITPOINT)),\
-    "EDITBOX",\
-    [TEXT, "Allows the tuning the effectiveness of groups of armor hitpoints.\n[hitpoint multiplier, minimum armor, maximum armor]\nIf minimum or maximum armor value is below 1, they don't take effect."],\
-    [COMPONENT_NAME, FORMAT_1("%1 settings",QUOTE(TYPE))],\
-    QUOTE(DEFAULT_SETTINGS),\
-    true,\
-    HITPOINT_SETTINGS_FUNCTION(HITPOINT,HASHVALUE)\
-] call CBA_fnc_addSetting
-
-#define HITPOINT_SETTINGS_SIDE(TYPE,HITPOINT,TEXT)\
+#define HITPOINT_SETTINGS_SIDE(TYPE,HITPOINT,TEXT,DEFAULT_ARRAY)\
 [\
     QGVAR(DOUBLES(TYPE,HITPOINT)),\
     "EDITBOX",\
     [TEXT, "Allows the tuning the effectiveness of groups of armor hitpoints.\n[hitpoint multiplier, minimum armor, maximum armor]\nIf minimum or maximum armor value is below 1, they don't take effect."],\
     [COMPONENT_NAME, FORMAT_1("Side settings - %1",QUOTE(TYPE))],\
-    QUOTE(DEFAULT_SETTINGS),\
+    QUOTE(DEFAULT_ARRAY),\
     true,\
     HITPOINT_SETTINGS_FUNCTION(HITPOINT,TYPE)\
 ] call CBA_fnc_addSetting
 
-#define HITPOINT_CHECK_SETTING(OBJECT,HASHVALUE) HITPOINT_SETTINGS(OBJECT,head,FORMAT_1("%1 hitpoint damage reduction - head",QUOTE(OBJECT)),HASHVALUE);\
-HITPOINT_SETTINGS(OBJECT,face,FORMAT_1("%1 hitpoint damage reduction - face",QUOTE(OBJECT)),HASHVALUE);\
-HITPOINT_SETTINGS(OBJECT,neck,FORMAT_1("%1 hitpoint damage reduction - neck",QUOTE(OBJECT)),HASHVALUE);\
-HITPOINT_SETTINGS(OBJECT,torso,FORMAT_1("%1 hitpoint damage reduction - torso",QUOTE(OBJECT)),HASHVALUE);\
-HITPOINT_SETTINGS(OBJECT,pelvis,FORMAT_1("%1 hitpoint damage reduction - pelvis",QUOTE(OBJECT)),HASHVALUE);\
-HITPOINT_SETTINGS(OBJECT,arms,FORMAT_1("%1 hitpoint damage reduction - arms",QUOTE(OBJECT)),HASHVALUE);\
-HITPOINT_SETTINGS(OBJECT,legs,FORMAT_1("%1 hitpoint damage reduction - legs",QUOTE(OBJECT)),HASHVALUE)
+#define HITPOINT_CHECK_SETTING_SIDE(OBJECT) HITPOINT_SETTINGS_SIDE(OBJECT,head,FORMAT_1("%1 hitpoint damage reduction - head",QUOTE(OBJECT)),ARR_3(1,7,7));\
+HITPOINT_SETTINGS_SIDE(OBJECT,face,FORMAT_1("%1 hitpoint damage reduction - face",QUOTE(OBJECT)),ARR_3(1,0,1));\
+HITPOINT_SETTINGS_SIDE(OBJECT,neck,FORMAT_1("%1 hitpoint damage reduction - neck",QUOTE(OBJECT)),ARR_3(1,0,1));\
+HITPOINT_SETTINGS_SIDE(OBJECT,torso,FORMAT_1("%1 hitpoint damage reduction - torso",QUOTE(OBJECT)),ARR_3(1,14,14));\
+HITPOINT_SETTINGS_SIDE(OBJECT,pelvis,FORMAT_1("%1 hitpoint damage reduction - pelvis",QUOTE(OBJECT)),ARR_3(1,14,14));\
+HITPOINT_SETTINGS_SIDE(OBJECT,arms,FORMAT_1("%1 hitpoint damage reduction - arms",QUOTE(OBJECT)),ARR_3(1,0,1));\
+HITPOINT_SETTINGS_SIDE(OBJECT,legs,FORMAT_1("%1 hitpoint damage reduction - legs",QUOTE(OBJECT)),ARR_3(1,0,1))
 
-#define HITPOINT_CHECK_SETTING_SIDE(OBJECT) HITPOINT_SETTINGS_SIDE(OBJECT,head,FORMAT_1("%1 hitpoint damage reduction - head",QUOTE(OBJECT)));\
-HITPOINT_SETTINGS_SIDE(OBJECT,face,FORMAT_1("%1 hitpoint damage reduction - face",QUOTE(OBJECT)));\
-HITPOINT_SETTINGS_SIDE(OBJECT,neck,FORMAT_1("%1 hitpoint damage reduction - neck",QUOTE(OBJECT)));\
-HITPOINT_SETTINGS_SIDE(OBJECT,torso,FORMAT_1("%1 hitpoint damage reduction - torso",QUOTE(OBJECT)));\
-HITPOINT_SETTINGS_SIDE(OBJECT,pelvis,FORMAT_1("%1 hitpoint damage reduction - pelvis",QUOTE(OBJECT)));\
-HITPOINT_SETTINGS_SIDE(OBJECT,arms,FORMAT_1("%1 hitpoint damage reduction - arms",QUOTE(OBJECT)));\
-HITPOINT_SETTINGS_SIDE(OBJECT,legs,FORMAT_1("%1 hitpoint damage reduction - legs",QUOTE(OBJECT)))
-
-[
-    QGVAR(useSide),
-    "LIST",
-    ["Armor assignment system", "What system a unit's modified armor values uses.\nBased on either side, or whether or not the unit is a player"],
-    COMPONENT_NAME,
-    [[true, false], ["Unit Side", "AI vs Player"], 0],
-    true,
-    {}
-] call CBA_fnc_addSetting;
-
-
-HITPOINT_CHECK_SETTING(Player,true);
-HITPOINT_CHECK_SETTING(AI,false);
 HITPOINT_CHECK_SETTING_SIDE(BluFor);
 HITPOINT_CHECK_SETTING_SIDE(OpFor);
 HITPOINT_CHECK_SETTING_SIDE(Independent);
