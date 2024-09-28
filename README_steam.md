@@ -29,6 +29,8 @@ _unit setVariable ["armor_modifier_ace_main_hitPointMultiplier_chest", [armorMul
 _unit setVariable ["armor_modifier_ace_main_hitPointMultiplier_limb", [armorMultiplier, minimumArmor, maximumArmor], true];
 [/code]
 
+2 is usually the minimum hitpoint armor a unit has without any equipment on.
+
 [h2]Examples[/h2]
 [list]
 [*] If [b]Player hitpoint damage reduction - chest[/b] is set to '[10, 0, 0]', it means that you take a 10th of the damage to the chest.
