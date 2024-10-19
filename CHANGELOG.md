@@ -1,3 +1,8 @@
+# Changelog for Armor Modifier - ACE 28.9.2024
+
+1.0.3.0
+- Updated to work with ACE 3.18.0. Remains backwards compatible with ACE 3.17.1.
+
 # Changelog for Armor Modifier - ACE 26.3.2024
 
 1.0.2.0

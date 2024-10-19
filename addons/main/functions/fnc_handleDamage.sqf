@@ -1,5 +1,4 @@
 #include "..\script_component.hpp"
-
 /*
  * Author: commy2, kymckay, modified by johnb43
  * Original:
@@ -7,7 +6,7 @@
  * Be aware that for each source of damage, the EH can fire multiple times (once for each hitpoint).
  * We store these incoming damages and compare them on our final hitpoint: "ace_hdbracket".
  * Added:
- * Handling of damage to allow armor modifcation.
+ * Handling of damage to allow armor modifcation. For ACE 3.18.0 and later.
  *
  * Arguments:
  * Handle damage EH
